@@ -40,30 +40,24 @@ feedparser.on('error', function () {
   // always handle errors
 })
 
+let finished = false;
+
 feedparser.on('end', function () {
     var article = articles[Math.floor(Math.random()*articles.length)]
-    console.log(article)
-    console.log(article.length)
+    finished = true
 })
-
-
 
 feedparser.on('readable', function () {
   // This is where the action is!
     var stream = this // `this` is `feedparser`, which is a stream
     var item
-
     while (item = stream.read()) {
-    // console.log(item);
-        // item.description = item.description.replace(/\<[^)]*?\> */gm, "")
-    
         articles.push(item.summary)
     }
 
-    // console.log(articles.length)
 })
 
-let finished = false;
+
 
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context, callback)
